@@ -18,6 +18,7 @@ CREATE TABLE `movie` (
   `description` text COLLATE utf8_unicode_ci,
   `actors` text COLLATE utf8_unicode_ci,
   `price` int(11) NOT NULL,
+  `image_path` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`index`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -33,9 +34,10 @@ CREATE TABLE `reviews` (
 
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
-  `user_id` int(11) DEFAULT NULL,
-  `movie_id` int(11) DEFAULT NULL,
-  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int(11) NOT NULL,
+  `movie_id` int(11) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `quantity` int(11) NOT NULL DEFAULT '0',
   KEY `pk` (`user_id`,`movie_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
