@@ -25,7 +25,7 @@ CREATE TABLE `movie` (
 DROP TABLE IF EXISTS `reviews`;
 CREATE TABLE `reviews` (
   `review_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `movie_id` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `text` text COLLATE utf8_unicode_ci,
   `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
