@@ -1,17 +1,10 @@
 from flask import render_template
-
+from mydb import MyDB
 
 def render_page_content():
 	content = dict()
-
-	content['movies'] = list()
-
-	for i in [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]:
-		movie = dict()
-		movie['id'] = i
-		movie['title'] = 'Title'
-		movie['actors'] = 'actors'
-
-		content['movies'].append(movie)
-
+	db = MyDB()
+	
+	content['movies'] = db.get_movies()
+	
 	return render_template('homepage.html', content = content)

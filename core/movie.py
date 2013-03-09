@@ -1,18 +1,15 @@
 from flask import render_template
-
+from mydb import MyDB
 
 def render_page_content(movie_id):
 	content = dict()
-
+	db = MyDB()
+	
 	content['id'] = movie_id
-	content['title'] = 'Title'
-	content['actors'] = 'actors'
-	content['reviews'] = list()
+	movie = db.get_movie_by_id( movie_id )
 
-	for i in range(10):
-		review = dict()
-		review['content'] = 'Testo review ' + str(i)
-		review['author'] = 'Autor'
-		content['reviews'].append(review)
+	content['title'] = movie['title']
+	content['actors'] = movie['title']
+	content['reviews'] = db.get_reviews_by_id( movie_id )
 
 	return render_template('movie.html', content = content)
