@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}homepage{% endblock %} 
+{% block container %}
+      <header class="jumbotron subhead" id="overview">
+        <div class="row">
+          <div class="span6">
+            <h1>myMovies</h1>
+            <p class="lead">compra e recensisci film online!</p>
+          </div>
+        </div>
+      </header>
+
+      <section style="margin-top:50px;">
+        <ul class="thumbnails">
+{% for movie in content.movies %}
+          <li class="span3">
+            <div class="thumbnail">
+              <a href='{{url_for('movie', movie_id = movie.id)}}'>
+                <div class="img-rounded" style="background:white;"><img src="/static/img/movies/{{ movie.id }}.jpg" class="img-rounded" style="display:block; margin-left:auto; margin-right:auto;"></div>
+              </a>
+              <h4>{{ movie.title }}</h3>
+              <p>{{ movie.actors }}</p>
+            </div>
+          </li>
+{% endfor %}
+        </ul>
+      </section>
+{% endblock %}

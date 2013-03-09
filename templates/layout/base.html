@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>myMovies | {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="NECST Lab, Politecnico di Milano">
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link href="/static/stylesheets/bootstrap.min.css" rel="stylesheet">
+{% block style %}{% endblock %}
+  </head>
+
+  <body data-spy="scroll" data-target=".subnav" data-offset="80" style="padding-top: 65px;">
+
+{% include "layout/nav.html" %}
+    <div class="container" id="top-container">
+{% block container %}{% endblock %}
+{% include "layout/footer.html" %}
+    </div>
+    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="/static/javascripts/bootstrap.min.js"></script>
+{% block scripts %}{% endblock %}  
+  </body>
+</html>
