@@ -36,13 +36,13 @@ class MyDB( object ):
 	@classmethod
 	def get_movies( clazz ):
 		cur = clazz.conn.cursor()
-		cur.execute( "SELECT `index`, `title`, `description`, `actors`, `price`, FROM `movie`" )
+		cur.execute( "SELECT `index`, `title`, `description`, `actors`, `price` FROM `movie`" )
 		return cur.fetchall()
 	
 	@classmethod
 	def get_movie_by_id( clazz, movie_id ):
 		cur = clazz.conn.cursor()
-		cur.execute( "SELECT `index`, `title`, `description`, `actors`, `price`, FROM `movie` WHERE `index` = %d" % movie_id )
+		cur.execute( "SELECT `index`, `title`, `description`, `actors`, `price` FROM `movie` WHERE `index` = %d" % movie_id )
 		return cur.fetchone()
 	
 	@classmethod
