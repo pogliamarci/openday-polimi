@@ -5,6 +5,8 @@ import threading
 import MySQLdb
 import MySQLdb.cursors
 
+from MySQLdb import escape_string as escape
+
 def synchronized(method):
 	def f(*args,**kwargs):
 		self = args[0]
@@ -34,13 +36,13 @@ class MyDB( object ):
 	@classmethod
 	def get_movies( clazz ):
 		cur = clazz.conn.cursor()
-		cur.execute( "SELECT `index`, `title`, `description`, `actors`, `price`, `image_path` FROM `movie`" )
+		cur.execute( "SELECT `index`, `title`, `description`, `actors`, `price`, FROM `movie`" )
 		return cur.fetchall()
 	
 	@classmethod
 	def get_movie_by_id( clazz, movie_id ):
 		cur = clazz.conn.cursor()
-		cur.execute( "SELECT `index`, `title`, `description`, `actors`, `price`, `image_path` FROM `movie` WHERE `index` = %d" % movie_id )
+		cur.execute( "SELECT `index`, `title`, `description`, `actors`, `price`, FROM `movie` WHERE `index` = %d" % movie_id )
 		return cur.fetchone()
 	
 	@classmethod
@@ -48,6 +50,16 @@ class MyDB( object ):
 		cur = clazz.conn.cursor()
 		cur.execute( "SELECT `username`, `timestamp`, `text` FROM `reviews` WHERE `movie_id` = %d ORDER BY `timestamp` ASC" % movie_id )
 		return cur.fetchall()
+
+	@classmethod
+	def insert_review( clazz, username, text ):
+		try:
+			clazz.conn.cursor().execute( "INSERT INTO `reviews` (`username`, `timestamp`, `text` ) VALUES ( '%s', '%s', CURRENT_TIMESTAMP )" % (escape(username), escape(text)) )
+			clazz.conn.commit()
+			return True
+		except MySQLdb.Error:
+			clazz.conn.rollback()
+			return False
 
 	@classmethod
 	@synchronized
