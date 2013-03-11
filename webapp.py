@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, g, flash, redirect
+from flask import Flask, render_template, request
 from flask.ext.login import (LoginManager, current_user, login_required,
 							login_user, logout_user, UserMixin, AnonymousUser,
 							confirm_login, fresh_login_required)
@@ -13,22 +13,23 @@ app.secret_key = 'why would I tell you my secret key?'
 
 login_manager = LoginManager()
 login_manager.login_view = "login"
-login_manager.login_message = u"Please log in to access this page."
-
+login_manager.login_message = "Please log in to access this page."
 login_manager.setup_app(app)
 
 class MyUser(UserMixin):
 	def __init__( self, user_id, username ):
 		self.id = user_id
 		self.username = username
+
 	def is_active( self ):
 		return True
+
 @login_manager.user_loader
 def load_user(user_id):
     username = MyDB.get_username_by_id( user_id )
     return MyUser( user_id, username )
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 def homepage():
 	return homepage_engine.render_page_content()
 
@@ -39,16 +40,18 @@ def login():
 		password = request.form["password"]
 		user_id = MyDB.get_user_id_by_credentials( username, password )
 		if user_id is not None:
-			login_user( MyUser( user_id, username ), remember="no" )
-			flash("Logged in!")
+			login_user( MyUser( user_id, username ), remember="no")
 			return homepage_engine.render_page_content()
 		else:
 			return render_template("login.html", error=True)
 	else:
 		return render_template("login.html")
 
-@app.route('/movie/<int:movie_id>')
+@app.route('/movie/<int:movie_id>', methods=["GET", "POST"])
 def movie(movie_id):
+	if request.method == "POST":
+		movie_engine.add_review(movie_id, request)
+
 	return movie_engine.render_page_content(movie_id)
 
 # @app.errorhandler(404)

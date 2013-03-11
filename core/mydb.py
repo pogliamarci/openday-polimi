@@ -48,13 +48,13 @@ class MyDB( object ):
 	@classmethod
 	def get_reviews_by_id( clazz, movie_id ):
 		cur = clazz.conn.cursor()
-		cur.execute( "SELECT `username`, `timestamp`, `text` FROM `reviews` WHERE `movie_id` = %d ORDER BY `timestamp` ASC" % movie_id )
+		cur.execute( "SELECT `username`, `timestamp`, `text` FROM `reviews` WHERE `movie_id` = %d ORDER BY `timestamp` DESC" % movie_id )
 		return cur.fetchall()
 
 	@classmethod
-	def insert_review( clazz, username, text ):
+	def insert_review( clazz, username, movie_id, text ):
 		try:
-			clazz.conn.cursor().execute( "INSERT INTO `reviews` (`username`, `timestamp`, `text` ) VALUES ( '%s', '%s', CURRENT_TIMESTAMP )" % (escape(username), escape(text)) )
+			clazz.conn.cursor().execute( "INSERT INTO `reviews` (`username`, `movie_id`, `text`, `timestamp` ) VALUES ( '%s', '%d',  '%s', CURRENT_TIMESTAMP )" % (escape(username), movie_id, escape(text)) )
 			clazz.conn.commit()
 			return True
 		except MySQLdb.Error:
@@ -75,10 +75,11 @@ class MyDB( object ):
 	@classmethod
 	def get_user_id_by_credentials( clazz, username, password ):
 		cur = clazz.conn.cursor()
+		print "SELECT `user_id` FROM `users` WHERE `username` = '%s' AND `password` = '%s'" % (username, password)
 		cur.execute( "SELECT `user_id` FROM `users` WHERE `username` = '%s' AND `password` = '%s'" % (username, password) )
 		result = cur.fetchall()
 		if result:
-			return result[0].__iter__().next()
+			return result[0].values().__iter__().next()
 
 	@classmethod
 	def get_username_by_id( clazz, user_id ):
@@ -86,5 +87,5 @@ class MyDB( object ):
 		cur.execute( "SELECT `username` FROM `users` WHERE `user_id` = %s" % (user_id) )
 		result = cur.fetchall()
 		if result:
-			return result[0].__iter__().next()
+			return result[0].values().__iter__().next()
 

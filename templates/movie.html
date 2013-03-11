@@ -2,38 +2,47 @@
 
 {% block title %}film{% endblock %} 
 {% block container %}
-      <header class="jumbotron subhead" id="overview">
-        <div class="row">
-          <div class="span6">
-            <h1>{{ content.title }}</h1>
-            <p class="lead">con {{ content.actors }}</p>
-          </div>
-        </div>
+      <header class="jumbotron subhead">
+        <h1>{{ content.title }}</h1>
+        <p class="lead">con {{ content.actors }}</p>
       </header>
 
       <section style="margin-top:50px;">
         <div class="row">
-          <div class="span9">
+          <div class="span8">
+        <img src="/static/img/movies/{{ content.id }}.jpg" class="img-rounded" align="left" style="margin-right: 10px;"><p>{{ content.description }}</p>
+          </div>
+          <div class="span4">
+            bla bla bla
+          </div>
+        </div>
+      </section>
+
+
+
+      <section style="margin-top:50px;">
+        <div class="row">
+          <div class="span8">
             <div class="page-header">
               <h2>le recensioni degli utenti</h2>
             </div>
 {% if content.reviews | count > 0%}
 {% for review in content.reviews %}
             <blockquote>
-              <p>{{ review.content }}</p>
-              <small>{{ review.author }}</small>
+              <p>{% autoescape false %}{{ review.text }}{% endautoescape %}</p>
+              <small>{{ review.username }}, {{ review.timestamp }}</small>
             </blockquote>
 {% endfor %}
 {% else %}
             Nessuno ha ancora pubblicato recensioni.
 {% endif %}
           </div>
-          <div class="span3">
+          <div class="span4">
             <div class="page-header">
               <h2>scrivi la tua</h2>
             </div>
-            <form>
-              <textarea rows="4" class="span3"></textarea>
+            <form action="" method="POST">
+              <textarea rows="5" class="span4" name="review"></textarea>
               <button type="submit" class="btn-small btn-inverse pull-right"><i class="icon-ok icon-white"></i> Invia</button>
             </form>
           </div>

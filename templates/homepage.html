@@ -2,7 +2,7 @@
 
 {% block title %}homepage{% endblock %} 
 {% block container %}
-      <header class="jumbotron subhead" id="overview">
+      <header class="jumbotron subhead">
         <div class="row">
           <div class="span6">
             <h1>myMovies</h1>
@@ -15,7 +15,7 @@
         <ul class="thumbnails">
 {% for movie in content.movies %}
           <li class="span3">
-            <div class="thumbnail">
+            <div class="thumbnail" style="height:280px;">
               <a href='{{url_for('movie', movie_id = movie.index)}}'>
                 <div class="img-rounded" style="background:white;"><img src="/static/img/movies/{{ movie.index }}.jpg" class="img-rounded" style="display:block; margin-left:auto; margin-right:auto;"></div>
               </a>
