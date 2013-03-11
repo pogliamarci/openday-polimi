@@ -53,7 +53,7 @@ class MyDB( object ):
 	@synchronized
 	def create_user( clazz, username, password ):
 		try:
-			clazz.conn.execute( "INSERT INTO `users` (`username`,`password`) VALUES ('%s','%s')" % (username,password) )
+			clazz.conn.cursor().execute( "INSERT INTO `users` (`username`,`password`) VALUES ('%s','%s')" % (username,password) )
 			clazz.conn.commit()
 			return True
 		except MySQLdb.Error:
@@ -61,8 +61,18 @@ class MyDB( object ):
 			return False
 	
 	@classmethod
-	def validate_credentials( clazz, username, password ):
+	def get_user_id_by_credentials( clazz, username, password ):
 		cur = clazz.conn.cursor()
 		cur.execute( "SELECT `user_id` FROM `users` WHERE `username` = '%s' AND `password` = '%s'" % (username, password) )
-		return cur.rowcount > 0
+		result = cur.fetchall()
+		if result:
+			return result[0].__iter__().next()
+
+	@classmethod
+	def get_username_by_id( clazz, user_id ):
+		cur = clazz.conn.cursor()
+		cur.execute( "SELECT `username` FROM `users` WHERE `user_id` = %s" % (user_id) )
+		result = cur.fetchall()
+		if result:
+			return result[0].__iter__().next()
 
