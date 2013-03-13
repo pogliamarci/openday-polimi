@@ -1,7 +1,5 @@
-from flask import Flask, render_template, request
-from flask.ext.login import (LoginManager, current_user, login_required,
-							login_user, logout_user, UserMixin, AnonymousUser,
-							confirm_login, fresh_login_required)
+from flask import Flask, render_template, request, redirect, url_for
+from flask.ext.login import LoginManager, current_user, login_required, login_user, logout_user, UserMixin
 
 import core.homepage as homepage_engine
 import core.movie as movie_engine
@@ -29,23 +27,34 @@ def load_user(user_id):
     username = MyDB.get_username_by_id( user_id )
     return MyUser( user_id, username )
 
-@app.route('/', methods=["GET"])
-def homepage():
-	return homepage_engine.render_page_content()
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
+	if current_user.is_authenticated():
+		return redirect(url_for('homepage'))
+
 	if request.method == "POST" and request.form.has_key("username") and request.form.has_key("password"):
 		username = request.form["username"]
 		password = request.form["password"]
 		user_id = MyDB.get_user_id_by_credentials( username, password )
 		if user_id is not None:
 			login_user( MyUser( user_id, username ), remember="no")
-			return homepage_engine.render_page_content()
+			return redirect(url_for('homepage'))
 		else:
-			return render_template("login.html", error=True)
+			content = dict()
+			return render_template("login.html", error=True, content=content)
 	else:
-		return render_template("login.html")
+		content = dict()
+		return render_template("login.html", content=content)
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('homepage'))
+
+@app.route('/', methods=["GET"])
+def homepage():
+	return homepage_engine.render_page_content()
 
 @app.route('/movie/<int:movie_id>', methods=["GET", "POST"])
 def movie(movie_id):
@@ -53,6 +62,11 @@ def movie(movie_id):
 		movie_engine.add_review(movie_id, request)
 
 	return movie_engine.render_page_content(movie_id)
+
+@app.route('/cart/<int:cart_id>', methods=["GET", "POST"]) #TODO
+def cart(cart_id):
+    return redirect(url_for('homepage')) #TODO	
+
 
 # @app.errorhandler(404)
 # def error_404(error):
