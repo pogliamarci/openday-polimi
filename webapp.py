@@ -73,17 +73,7 @@ def add_cart(movie_id):
 
 @app.route('/cart/<int:cart_id>', methods=["GET"])
 def cart(cart_id):
-    return redirect(url_for('homepage')) #TODO	
-
-
-# @app.errorhandler(404)
-# def error_404(error):
-#	 return render_template('error.html', error = 404), 404
-
-# @app.errorhandler(400)
-# def error_400(error):
-#	 return render_template('error.html', error = 400), 400
-
+	return cart_engine.render_page_content(cart_id)
 
 if __name__ == '__main__':
 	app.run(host = "0.0.0.0", port = 80, debug = True)

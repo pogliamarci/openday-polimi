@@ -103,7 +103,7 @@ class MyDB( object ):
 	@classmethod
 	def get_cart( clazz, user_id ):
 		cur = clazz.conn.cursor()
-		cur.execute( "SELECT c.`movie_id`, m.title, c.quantity, m.actors, m.description, m.price, c.timestamp FROM `cart` c INNER JOIN `movie` m ON c.movie_id = m.index WHERE c.`user_id` = %s" % (user_id) )
+		cur.execute( "SELECT c.`movie_id`, m.title, c.quantity, m.actors, m.description, m.price, c.timestamp FROM `cart` c INNER JOIN `movie` m ON c.movie_id = m.index WHERE c.`user_id` = %s ORDER BY c.timestamp DESC" % (user_id) )
 
 		result = cur.fetchall()
 

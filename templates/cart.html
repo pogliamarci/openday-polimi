@@ -1,0 +1,46 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}film{% endblock %} 
+{% block container %}
+      <header class="jumbotron subhead">
+        <h1>Utente: {{ content.username }}</h1>
+        <p class="lead">Il carrello dei tuoi acquisti</p>
+      </header>
+
+      <section style="margin-top:50px;">
+{% if content.records | count > 0%}
+        <div class="row">
+          <div class="span9">
+            <table class="table table-hover table table-striped">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Descrizione</th>
+                  <th style="text-align:center;">Quantità</th>
+                  <th style="text-align:center;">Subtotale</th>
+                </tr>
+              </thead>
+              <tbody>
+{% for item in content.records %}
+                <tr>
+                  <td><img src="/static/img/movies/{{ item.id }}.jpg" class="img-rounded" style="display:block; margin-left:auto; margin-right:auto; height:50%;"></td>
+                  <td style="vertical-align:middle;"><strong>{{ item.title }}</strong><br/>con {{ item.actors }}<br/><em><small>{{ item.price }} euro cad.</small></em></td>
+                  <td style="vertical-align:middle; text-align:center;">{{ item.quantity }}</td>
+                  <td style="vertical-align:middle; text-align:center;">{{ item.subtotal }} euro</td>
+                </tr>
+{% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="span3">
+            <div style="text-align: right;">
+              <h2 style="margin-top:0px;">totale</h2>
+              <p class="lead">{{ content.total }} euro</p>
+            </div>
+          </div>
+        </div>
+{% else %}
+        <p>Non hai ancora comprato niente. Visita il <a href="{{url_for('homepage')}}">negozio</a>!</p>
+{% endif %}
+      </section>
+{% endblock %}
