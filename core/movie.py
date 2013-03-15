@@ -28,6 +28,7 @@ def render_page_content(movie_id):
 	content['title'] = movie['title']
 	content['actors'] = movie['actors']
 	content['description'] = movie['description']
+	content['price'] = str(movie['price'])[:-2] + '.' + str(movie['price'])[-2:]
 	content['reviews'] = db.get_reviews_by_id( movie_id )
 
 	return render_template('movie.html', content=content)

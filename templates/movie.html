@@ -13,12 +13,24 @@
         <img src="/static/img/movies/{{ content.id }}.jpg" class="img-rounded" align="left" style="margin-right: 10px;"><p>{{ content.description }}</p>
           </div>
           <div class="span4">
-            bla bla bla
+            <div style="text-align: right;">
+              <h2 style="margin-top:0px;">acquista</h2>
+              <p><strong>Prezzo: </strong> <span id="price">{{ content.price }}</span> euro<br/>
+              <strong>Disponibilità: </strong> immediata</p>
+{% if content.login.authenticated %}
+              <form class="form-inline pull-right" style="margin-top:30px;" action="{{url_for('add_cart', movie_id=content.id)}}" method="POST">
+                <div class="input-append">
+                  <input class="span1" type="number" style="text-align:center;" placeholder="qtà" required name="quantity">
+                  <button class="btn btn-inverse" type="submit"><i class="icon-shopping-cart icon-white"></i>  Vai</button>
+                </div>
+              </form>
+{% else %}
+              <p style="margin-top:30px;">Per acquistare, <a href="{{url_for('login')}}">effettua il login</a>.</p>
+{% endif %}
+            </div>
           </div>
         </div>
       </section>
-
-
 
       <section style="margin-top:50px;">
         <div class="row">
@@ -38,11 +50,11 @@
 {% endif %}
           </div>
           <div class="span4">
-            <div class="page-header">
+            <div class="page-header" style="text-align: right;">
               <h2>scrivi la tua</h2>
             </div>
-            <form action="" method="POST">
-              <textarea rows="5" class="span4" name="review"></textarea>
+            <form action="" method="POST" style="text-align: right;">
+              <textarea rows="5" style="width:80%;" name="review" required></textarea>
               <button type="submit" class="btn-small btn-inverse pull-right"><i class="icon-ok icon-white"></i> Invia</button>
             </form>
           </div>

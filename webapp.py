@@ -3,6 +3,7 @@ from flask.ext.login import LoginManager, current_user, login_required, login_us
 
 import core.homepage as homepage_engine
 import core.movie as movie_engine
+import core.cart as cart_engine
 
 from core.mydb import MyDB; MyDB()
 
@@ -63,7 +64,14 @@ def movie(movie_id):
 
 	return movie_engine.render_page_content(movie_id)
 
-@app.route('/cart/<int:cart_id>', methods=["GET", "POST"]) #TODO
+@app.route('/addcart/<int:movie_id>', methods=["POST"])
+@login_required
+def add_cart(movie_id):
+	cart_engine.add_to_cart(movie_id, request)
+
+	return redirect(url_for('cart', cart_id=current_user.id))
+
+@app.route('/cart/<int:cart_id>', methods=["GET"])
 def cart(cart_id):
     return redirect(url_for('homepage')) #TODO	
 

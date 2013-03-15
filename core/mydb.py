@@ -89,3 +89,23 @@ class MyDB( object ):
 		if result:
 			return result[0].values().__iter__().next()
 
+	@classmethod
+	@synchronized
+	def add_to_cart( clazz, user_id, movie_id, quantity ):
+		try:
+			clazz.conn.cursor().execute( "INSERT INTO `cart` (`user_id`,`movie_id`,`quantity`) VALUES ('%s','%s','%d')" % (user_id, movie_id, quantity) )
+			clazz.conn.commit()
+			return True
+		except MySQLdb.Error:
+			clazz.conn.rollback()
+			return False
+
+	@classmethod
+	def get_cart( clazz, user_id ):
+		cur = clazz.conn.cursor()
+		cur.execute( "SELECT c.`movie_id`, m.title, c.quantity, m.actors, m.description, m.price, c.timestamp FROM `cart` c INNER JOIN `movie` m ON c.movie_id = m.index WHERE c.`user_id` = %s" % (user_id) )
+
+		result = cur.fetchall()
+
+		if result:
+			return result
