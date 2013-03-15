@@ -5,7 +5,8 @@ import threading
 import MySQLdb
 import MySQLdb.cursors
 
-from MySQLdb import escape_string as escape
+from MySQLdb import escape_string
+escape = lambda x: escape_string( x.encode("utf8") ).decode( "utf8" )
 
 def synchronized(method):
 	def f(*args,**kwargs):
@@ -54,7 +55,7 @@ class MyDB( object ):
 	@classmethod
 	def insert_review( clazz, username, movie_id, text ):
 		try:
-			clazz.conn.cursor().execute( "INSERT INTO `reviews` (`username`, `movie_id`, `text`, `timestamp` ) VALUES ( '%s', '%d',  '%s', CURRENT_TIMESTAMP )" % (escape(username), movie_id, escape(text)) )
+			clazz.conn.cursor().execute( u"INSERT INTO `reviews` (`username`, `movie_id`, `text`, `timestamp` ) VALUES ( '%s', '%d',  '%s', CURRENT_TIMESTAMP )" % (escape(username), movie_id, escape(text)) )
 			clazz.conn.commit()
 			return True
 		except MySQLdb.Error:
@@ -65,7 +66,7 @@ class MyDB( object ):
 	@synchronized
 	def create_user( clazz, username, password ):
 		try:
-			clazz.conn.cursor().execute( "INSERT INTO `users` (`username`,`password`) VALUES ('%s','%s')" % (username,password) )
+			clazz.conn.cursor().execute( u"INSERT INTO `users` (`username`,`password`) VALUES ('%s','%s')" % (username,password) )
 			clazz.conn.commit()
 			return True
 		except MySQLdb.Error:
@@ -75,8 +76,7 @@ class MyDB( object ):
 	@classmethod
 	def get_user_id_by_credentials( clazz, username, password ):
 		cur = clazz.conn.cursor()
-		print "SELECT `user_id` FROM `users` WHERE `username` = '%s' AND `password` = '%s'" % (username, password)
-		cur.execute( "SELECT `user_id` FROM `users` WHERE `username` = '%s' AND `password` = '%s'" % (username, password) )
+		cur.execute( u"SELECT `user_id` FROM `users` WHERE `username` = '%s' AND `password` = '%s'" % (username, password) )
 		result = cur.fetchall()
 		if result:
 			return result[0].values().__iter__().next()
@@ -84,7 +84,7 @@ class MyDB( object ):
 	@classmethod
 	def get_username_by_id( clazz, user_id ):
 		cur = clazz.conn.cursor()
-		cur.execute( "SELECT `username` FROM `users` WHERE `user_id` = %s" % (user_id) )
+		cur.execute( u"SELECT `username` FROM `users` WHERE `user_id` = %s" % (user_id) )
 		result = cur.fetchall()
 		if result:
 			return result[0].values().__iter__().next()
