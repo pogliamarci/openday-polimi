@@ -68,12 +68,11 @@ def movie(movie_id):
 @login_required
 def add_cart(movie_id):
 	cart_engine.add_to_cart(movie_id, request)
-
-	return redirect(url_for('cart', cart_id=current_user.id))
+	return cart_engine.render_page_content(current_user.id, True)
 
 @app.route('/cart/<int:cart_id>', methods=["GET"])
 def cart(cart_id):
-	return cart_engine.render_page_content(cart_id)
+	return cart_engine.render_page_content(cart_id, False)
 
 if __name__ == '__main__':
 	app.run(host = "0.0.0.0", port = 80, debug = True)

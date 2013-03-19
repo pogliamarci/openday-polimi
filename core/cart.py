@@ -7,11 +7,12 @@ def add_to_cart(movie_id, request):
 	quantity = int(request.form["quantity"])
 	MyDB.add_to_cart(current_user.id, movie_id, quantity)
 
-def render_page_content(cart_id):
+def render_page_content(cart_id, confirm):
 	content = dict()
 	db = MyDB()
 
 	content['login'] = tools.get_user_info()
+	content['confirm'] = confirm
 	content['records'] = list()
 	
 	total = 0
