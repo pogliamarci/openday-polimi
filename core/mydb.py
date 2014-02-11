@@ -90,6 +90,15 @@ class MyDB( object ):
 			return result[0].values().__iter__().next()
 
 	@classmethod
+	def get_isAdmin_by_id( clazz, user_id ):
+		cur = clazz.conn.cursor()
+		cur.execute( u"SELECT `isAdmin` FROM `users` WHERE `user_id` = %s" % (user_id) )
+		result = cur.fetchall()
+		if result:
+			return result[0].values().__iter__().next()
+
+
+	@classmethod
 	@synchronized
 	def add_to_cart( clazz, user_id, movie_id, quantity ):
 		try:
@@ -99,6 +108,17 @@ class MyDB( object ):
 		except MySQLdb.Error:
 			clazz.conn.rollback()
 			return False
+
+	@classmethod
+	def get_users( clazz):
+		cur = clazz.conn.cursor()
+		cur.execute( "SELECT * FROM users;")
+
+		result = cur.fetchall()
+
+		if result:
+			return result
+
 
 	@classmethod
 	def get_cart( clazz, user_id ):
