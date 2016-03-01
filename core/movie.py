@@ -9,20 +9,20 @@ def add_review(movie_id, request):
 	if len(review) == 0:
 		return
 
-	if not current_user.is_authenticated():
+	if not current_user.is_authenticated:
 		author = "Utente anonimo"
 	else:
 		author = current_user.username
-		
+
 	MyDB.insert_review(author, movie_id, review)
 
 def render_page_content(movie_id):
 	content = dict()
 	db = MyDB()
 
-	content['login'] = tools.get_user_info()	
+	content['login'] = tools.get_user_info()
 	content['id'] = movie_id
-	
+
 	movie = db.get_movie_by_id( movie_id )
 
 	content['title'] = movie['title']

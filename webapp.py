@@ -30,7 +30,7 @@ def load_user(user_id):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-	if current_user.is_authenticated():
+	if current_user.is_authenticated:
 		return redirect(url_for('homepage'))
 
 	if request.method == "POST" and request.form.has_key("username") and request.form.has_key("password"):
@@ -75,4 +75,4 @@ def cart(cart_id):
 	return cart_engine.render_page_content(cart_id, False)
 
 if __name__ == '__main__':
-	app.run(host = "0.0.0.0", port = 80, debug = True)
+	app.run(host = "0.0.0.0", port = 8080, debug = True)
