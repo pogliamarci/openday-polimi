@@ -8,6 +8,7 @@ CREATE TABLE `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `isAdmin` bool DEFAULT 0 NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -45,7 +46,9 @@ DROP USER 'vuln-user'@'localhost';
 CREATE USER 'vuln-user'@'localhost' IDENTIFIED BY 'vuln-pass';
 GRANT ALL ON `my_movies`.* TO 'vuln-user'@'localhost';
 
-INSERT INTO `users` (`username`, `password`) VALUES ('stefano','stefano'), ('eros','eros'), ('fabio', 'fabio'), ('andrea', 'andrea'), ('federico', 'federico');
+INSERT INTO `users` (`username`, `password`) VALUES ('stefano','stefano'), ('eros','eros'), ('fabio', 'fabio'), ('andrea', 'andrea'), ('federico', 'federico'), ('mario', 'mario'), ('john', 'mich');
+
+INSERT INTO `users` (`username`, `password`, `isAdmin`) VALUES ('admin','tipiacerebbesapere la passworddiadmin',1);
 
 INSERT INTO `movie` (`index`, `title`, `description`, `actors`, `price`) VALUES
 (1, '007 Skyfall', 										'La lealtà di James Bond verso M (Judi Dench) è messa a dura prova quando il passato della donna torna a perseguitarla. E mentre l\'M6 è sotto attacco, l\'agente 007 deve scovare e distruggere la minaccia a tutti i costi, anche personali.', 'Daniel Craig, Javier Bardem, Judi Dench e Ralph Fiennes', 1261),
