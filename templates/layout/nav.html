@@ -9,6 +9,9 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{ content.login.username }}<b class="caret"></b></a>
               <ul class="dropdown-menu">
+{% if content.login.isAdmin %}
+                <li><a href="{{url_for('admin')}}"><i class="icon-remove"></i> List of Users</a></li>
+{% endif %}
                 <li><a href="{{url_for('cart', cart_id = content.login.id)}}"><i class="icon-shopping-cart"></i> carrello</a></li>
                 <li><a href="{{url_for('logout')}}"><i class="icon-remove"></i> logout</a></li>
               </ul>
